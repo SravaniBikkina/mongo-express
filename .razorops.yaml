@@ -1,0 +1,25 @@
+
+version: v2
+
+global:
+  runner:
+    os_image: ubuntu
+  variables:
+    - RACK_ENV=test
+
+tasks:
+  build-docker-image:
+    steps:
+      - checkout
+      - docker/build:
+          image: sravanibikkina/mongoexpress
+          dockerfile: Dockerfile
+          context: .
+ 
+  deploy-to-kubernetes-cluster:
+    steps:
+      - checkout
+      - commands:
+          #Deploy to minikube cluster
+           -  kubectl apply -f deployment.yaml
+           -   kubectl apply -f service.yaml
